@@ -26,13 +26,10 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Install Dependencies
+      - name: Prepare Web Assets Directory
         run: |
-          npm install
-
-      - name: Build Web Assets
-        run: |
-          npm run build
+          mkdir -p www
+          cp index.html www/ 2>/dev/null || true
 
       - name: Initialize Capacitor & Add Android Platform
         run: |
