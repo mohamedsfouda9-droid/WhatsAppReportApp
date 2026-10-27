@@ -17,7 +17,7 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
-        with:
+with:
           node-version: 18
 
       - name: Setup Java JDK
@@ -30,14 +30,28 @@ jobs:
         run: |
           npm install
 
-      - name: Prepare Web Assets Directory
+      - name: Create Capacitor Config & Web Assets
         run: |
+          # إنشاء مجلد www ووضع ملف index.html داخله تأكيداً
           mkdir -p www
-          cp index.html www/ 2>/dev/null || true
+          if [ -f "index.html" ]; then
+            cp index.html www/
+          else
+            echo "<h1 dir='rtl'>تطبيق الإبلاغ</h1>" > www/index.html
+          fi
 
-      - name: Initialize Capacitor & Add Android Platform
+          # إنشاء ملف إعدادات Capacitor يدوياً لمنع أي أخطاء في الـ init
+          cat <<EOF > capacitor.config.json
+          {
+            "appId": "com.whatsapp.reportapp",
+            "appName": "WhatsApp Report",
+            "webDir": "www",
+            "bundledWebRuntime": false
+          }
+          EOF
+
+      - name: Add Android Platform & Sync
         run: |
-          npx cap init "WhatsApp Report" "com.whatsapp.reportapp" --web-dir www
           npx cap add android
           npx cap sync android
 
