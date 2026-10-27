@@ -17,9 +17,9 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
-with:
-          node-version: 18 
-          
+        with:
+          node-version: 18
+
       - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
@@ -32,7 +32,6 @@ with:
 
       - name: Create Capacitor Config & Web Assets
         run: |
-          # إنشاء مجلد www ووضع ملف index.html داخله تأكيداً
           mkdir -p www
           if [ -f "index.html" ]; then
             cp index.html www/
@@ -40,8 +39,7 @@ with:
             echo "<h1 dir='rtl'>تطبيق الإبلاغ</h1>" > www/index.html
           fi
 
-          # إنشاء ملف إعدادات Capacitor يدوياً لمنع أي أخطاء في الـ init
-          cat <<EOF > capacitor.config.json
+          cat << 'EOF' > capacitor.config.json
           {
             "appId": "com.whatsapp.reportapp",
             "appName": "WhatsApp Report",
